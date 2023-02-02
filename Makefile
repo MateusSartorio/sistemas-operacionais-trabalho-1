@@ -12,6 +12,11 @@ H_SOURCE=$(wildcard ./headers/*.h)
 # arquivos objeto .o
 OBJ=$(C_SOURCE:./src/%.c=./bin/%.o)
 
+all: | DIR
+
+DIR:
+	mkdir -p bin
+
 all: $(NOME_PROJETO)
 
 $(NOME_PROJETO): $(OBJ)

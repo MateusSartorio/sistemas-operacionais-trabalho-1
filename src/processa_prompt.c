@@ -8,7 +8,6 @@ static char* strtok2(char* str, char* delimitador) {
     static char* p = NULL;
     char* p2 = NULL;
 
-
     if(delimitador == NULL || (strcmp(delimitador, "") == 0) ) {
         printf("Delimitador nao pode ser nulo ou uma string vazia - strtok2().\n");
         return NULL;
@@ -88,7 +87,7 @@ int processa_prompt(char* prompt, char vetor_comandos[][TAMANHO_MAXIMO_COMANDO])
     int i = 0;
     while(token) {
         trim(token, vetor_comandos[i]);
-        i++;
+        if(strcmp(token, "%")) i++;
         
         // Verifica se mais de 5 comandos foram passados
         if(i > 5) {

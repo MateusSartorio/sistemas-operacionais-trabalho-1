@@ -108,7 +108,7 @@ static void executa_comando(char* comando) {
     argv[i] = NULL;
     
     int dev_null = open("/dev/null", O_CREAT | O_WRONLY);
-    dup2(dev_null, STDOUT_FILENO);
+    if(dup2(dev_null, STDOUT_FILENO) == -1) perror("");
     // dup2(dev_null, STDERR_FILENO);
     execvp(argv[0], argv);
     
@@ -132,7 +132,6 @@ static void cria_nova_secao(char vetor_comandos[][TAMANHO_MAXIMO_COMANDO], pid_t
             printf("Erro ao criar nova secao - cria_nova_secao().\n");
             exit(1);
         }
-        
         int qtd_processos = 0;
         while(strcmp(vetor_comandos[qtd_processos], "NULL") != 0)
             qtd_processos++;
@@ -166,11 +165,10 @@ static void cria_nova_secao(char vetor_comandos[][TAMANHO_MAXIMO_COMANDO], pid_t
         }
         
         int status = 0;
-        while(wait(&status) != -1) {
+        while(wait(&status) != -1)
             if(WIFSIGNALED(status))
                 if(WTERMSIG(status) == SIGUSR1)
                     raise(SIGUSR1);
-        }
 
         exit(0);
     }
